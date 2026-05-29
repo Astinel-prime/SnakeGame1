@@ -8,11 +8,20 @@ const int width=20,height=20;
 
 int x,y,fruitX,fruitY,score;
 int tailX[100],tailY[100];
-int nTail;
+int nTail=0;
 enum eDirection{STOP=0,UP,DOWN,LEFT,RIGHT};
 eDirection dir;
-void setup(){
 
+void HideCursor() {
+    HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+    CONSOLE_CURSOR_INFO info;
+    info.dwSize = 100;
+    info.bVisible = FALSE;
+    SetConsoleCursorInfo(consoleHandle, &info);
+}
+
+void setup(){
+    HideCursor();
     gameover=false;
     dir= STOP;
     x=width/2;
@@ -20,6 +29,7 @@ void setup(){
     fruitX = rand() % width;
     fruitY = rand() % height;
     score=0;
+    
  }
 
 void draw(){
@@ -42,9 +52,12 @@ void draw(){
             }
             else {
                 bool print=false;
-                for(int i=0;i<nTail;i++){
+                for(int k=0;k<nTail;k++){
+                    if(tailX[k]==j&&tailY[k]==i){
                     cout<<"o";
                     print=true;
+                    break;
+                    }
                 }
                 if(!print) cout<<" ";
             }
@@ -136,6 +149,6 @@ int main(){
         draw();
         input();
         logic();
-        Sleep(10);
+        Sleep(80);
     }
 }
